@@ -1,8 +1,7 @@
-
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +13,16 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/'); // Redirect to home page after login
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithPopup(auth, provider);
+      navigate('/');
     } catch (err) {
       setError(err.message);
     }
@@ -26,6 +34,13 @@ const Login = () => {
         <h2 className="text-2xl font-bold mb-6">Login</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleLogin}>
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full bg-red-600 text-white p-2 rounded-lg mb-4 hover:bg-red-700"
+          >
+            Login with Google
+          </button>
           <div className="mb-4">
             <label className="block text-gray-700">Email</label>
             <input
@@ -36,7 +51,7 @@ const Login = () => {
               required
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-4">
             <label className="block text-gray-700">Password</label>
             <input
               type="password"
@@ -46,10 +61,7 @@ const Login = () => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700"
-          >
+          <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700">
             Login
           </button>
         </form>
