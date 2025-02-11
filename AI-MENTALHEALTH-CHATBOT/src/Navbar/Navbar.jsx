@@ -56,6 +56,30 @@ const Navbar = () => {
             Live Consultation
           </NavLink>
         </div>
+
+        {/* Login and Signup buttons on the right */}
+        <div className="flex space-x-4">
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive
+                ? 'text-white bg-blue-700 px-4 py-2 rounded-lg'
+                : 'text-white hover:bg-blue-700 px-4 py-2 rounded-lg'
+            }
+          >
+            Login
+          </NavLink>
+          <NavLink
+            to="/signup"
+            className={({ isActive }) =>
+              isActive
+                ? 'text-white bg-blue-700 px-4 py-2 rounded-lg'
+                : 'text-white hover:bg-blue-700 px-4 py-2 rounded-lg'
+            }
+          >
+            Signup
+          </NavLink>
+        </div>
       </div>
     </nav>
   );
